@@ -1,32 +1,34 @@
 package com.vrcmicrotech.kotlinapp
 
+import io.mockk.MockKAnnotations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class MainActivityViewModelTest{
 
     lateinit var model: MainActivityViewModel
-    @ExperimentalCoroutinesApi
-    val dispatcher = TestCoroutineDispatcher()
+    private val dispatcher = TestCoroutineDispatcher()
 
-    @ExperimentalCoroutinesApi
     @Before
     fun setUp(){
-        model = MainActivityViewModel()
+        MockKAnnotations.init(this)
         Dispatchers.setMain(dispatcher)
+        model = MainActivityViewModel()
     }
 
     @Test
-    fun `testing call service function for fail case`() = runBlocking{
+    fun testingCallService() = runBlocking{
         model.callService()
-        val result = model.result.value
-        assertEquals("NOT", result)
+        val res = model.result.value
+        assertEquals("RESULT", res)
     }
 
 }
